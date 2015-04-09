@@ -1,0 +1,120 @@
+<!DOCTYPE HTML>
+<html>
+<script type="text/javascript">
+var canvas, ctx,
+    prevX = 0,
+    currX = 0,
+    prevY = 0,
+    currY = 0;
+
+var x = "yellow",
+    y = 3,
+    ival=1,
+    vx=0,
+    vy=0,
+    t_prex=0,
+    t_prey=0,
+    t_curx=0,
+    t_cury=0,
+    array=[],
+    co=[];
+
+for (var l =0 ; l < 50; l++){
+	co.push([l,1]);
+
+}
+function init() {
+    canvas = document.getElementById('can');
+    ctx = canvas.getContext("2d");
+    w = canvas.width;
+    h = canvas.height;
+    canvas.addEventListener("mousedown", function (e) {
+        findxy('down', e)
+    }, false);
+}
+
+function color(obj) {
+    y=2;
+    if(obj == 1){
+	x = "red";	
+	}
+    else if(obj == 2){
+	x = "blue";	
+	}
+    else if(obj == 3){
+	x = "green";	
+	}
+    else if(obj == 4){
+	x = "yellow";	
+	return x;
+	}
+    else if(obj == 5){
+	x = "orange";
+	}
+    else{
+	x = "gray";
+	}
+}
+
+function findxy(res,e) {
+    if (res == 'down') {
+        prevX = e.clientX - canvas.offsetLeft;
+        prevY = e.clientY - canvas.offsetTop;
+	ctx.beginPath();
+	radius=3;
+	ctx.arc(prevX, prevY, radius, 0, 2 * Math.PI, false); 
+	ctx.strokeStyle = vx;
+    	ctx.lineWidth = 4;
+    	ctx.stroke();
+	ctx.fillText('P'+ival,prevX+5,prevY-4);
+    	ctx.closePath();
+	array.push([ival,prevX,prevY]);    	
+	ival=ival+1;
+	}
+}
+function func(){
+	var xe=document.getElementById("xval")
+	var ye=document.getElementById("yval")
+	vx=xe.value;
+	vy=ye.value;
+}
+
+function lineto(obj) {
+    if(obj.id == "draw"){
+	for (var i =0 ; i < array.length; i++){
+		if(array[i][0]==vx){
+			t_prex=array[i][1];
+			t_prey=array[i][2];
+		}
+		else if(array[i][0]==vy){
+			t_curx=array[i][1];
+			t_cury=array[i][2];
+		}
+	}
+    }
+    ctx.beginPath();
+    ctx.moveTo(t_prex,t_prey);
+    ctx.lineTo(t_curx,t_cury);
+    for (var k =0 ; k < co.length; k++){
+	if (co[k][0]==vx){
+		co[k][1]=(co[k][1])+1;
+		color(co[k][1]);
+	}
+    }
+    ctx.strokeStyle = x;
+    ctx.lineWidth = y;
+    ctx.stroke();
+    ctx.closePath();
+}
+
+</script>
+<body onload="init()">
+    <canvas id="can" width="800" height="500" style="border:2px solid;"></canvas>
+<div style="position:absolute;top:46%;left:70%;">Enter Connection</div>
+<div style="position:absolute;top:49%;left:70%;">From</div>
+<input style="position:absolute;top:52%;left:70%;width:100px;height:15px;background:yellow;border:1px solid;" type="text" id="xval" onKeydown="func();"></input>
+<div style="position:absolute;top:56%;left:70%;">To</div>
+<input style="position:absolute;top:59%;left:70%;width:100px;height:15px;background:yellow;border:1px solid;" type="text" id="yval" onKeydown="func();"></input>
+<div style="position:absolute;top:63%;left:70%;width:50px;height:20px;background:red;border:1px solid;" id="draw" onclick="lineto(this)">Enter</div>
+</body>
+</html>
