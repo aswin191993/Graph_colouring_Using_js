@@ -72,6 +72,7 @@ function findxy(res,e) {
 	ival=ival+1;
 	}
 }
+
 function func(){
 	var xe=document.getElementById("xval")
 	var ye=document.getElementById("yval")
@@ -79,6 +80,14 @@ function func(){
 	vy=ye.value;
 }
 
+function selectclr(){
+    if(tpr<=tnxt){
+	color(tnxt);
+    }
+    else{
+	color(tpr);
+    }
+}
 function lineto(obj) {
     if(obj.id == "draw"){
 	for (var i =0 ; i < array.length; i++){
@@ -97,10 +106,15 @@ function lineto(obj) {
     ctx.lineTo(t_curx,t_cury);
     for (var k =0 ; k < co.length; k++){
 	if (co[k][0]==vx){
+		tpr=co[k][1];
 		co[k][1]=(co[k][1])+1;
-		color(co[k][1]);
+	}
+	if (co[k][0]==vy){
+		tnxt=co[k][1];
+		co[k][1]=(co[k][1])+1;
 	}
     }
+    selectclr();
     ctx.strokeStyle = x;
     ctx.lineWidth = y;
     ctx.stroke();
